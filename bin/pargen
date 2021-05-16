@@ -15,9 +15,22 @@
 # implied.  See the License for the specific language governing
 # permissions and limitations under the License.
 
-d=grmhd_Sa0
+d=$(basename $PWD | cut -d_ -f1)
 
-for f in /public/arashr/eht/sgra/${d}/*.h5; do
-	# input,Rhigh,inc,Munit
-	echo http://stash.osgconnect.net${f},1,70,7.39802e+19
+for f in $(ls -U1 "/public/ckc/eht/sgra/${d}/"*.h5 | head -n4); do
+	t=$(basename "$f" ".h5" | cut -d_ -f2)
+	s=$(expr "$t" / 1000 \* 1000)
+	grep "$s" "/public/ckc/eht/sgra/munits_${d}.txt" > "${d}-tmp.tsv"
+
+	if [ $(cat "${d}-tmp.tsv" | wc -l) -ne 36 ]; then
+	    echo 'ERROR!!!'
+	    break
+	fi
+
+	awk '{print $2","$1","$4}' "${d}-tmp.tsv" | while read p; do
+		# input,Rhigh,inc,Munit
+		echo http://stash.osgconnect.net${f},${t},${p}
+	done
+
+	rm "${d}-tmp.tsv"
 done

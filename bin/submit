@@ -31,18 +31,18 @@ arguments  = $Fnx(input) $(Rhigh) $(inc) $(Munit)
 transfer_executable    = False
 transfer_input_files   = bin/,$(input)
 transfer_output_remaps = "\
-	image.h5=out/img_$Fn(input)_$(Rhigh)_$(inc).h5"
+	image.h5=out/img_$(frame)_$(Rhigh)_$(inc).h5"
 
-output = log/img_$Fn(input)_$(Rhigh)_$(inc).out
-error  = log/img_$Fn(input)_$(Rhigh)_$(inc).err
-log    = log/img_$Fn(input)_$(Rhigh)_$(inc).log
+output = log/img_$(frame)_$(Rhigh)_$(inc).out
+error  = log/img_$(frame)_$(Rhigh)_$(inc).err
+log    = log/img_$(frame)_$(Rhigh)_$(inc).log
 
 universe       = vanilla
-request_memory = 2 GB
+request_memory = 4 GB
 request_disk   = 1 GB
-request_cpus   = 1
+request_cpus   = 4
 
 on_exit_hold     = (ExitBySignal == True) || (ExitCode > 1)
 periodic_release = (NumJobStarts < 3) && ((CurrentTime - EnteredCurrentStatus) > 60)
 
-queue 1 input,Rhigh,inc,Munit from bin/pargen |
+queue 1 input,frame,Rhigh,inc,Munit from bin/pargen |

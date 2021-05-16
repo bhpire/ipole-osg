@@ -44,8 +44,8 @@ cat <<EOF | tee ipole.par
 # Common
 dump    ${input}
 outfile image.h5
-nx      200
-ny      200
+nx      400
+ny      400
 
 # Emission 1=Pandya, 4=Dexter, others are debug/custom
 emission_type 4
@@ -114,3 +114,5 @@ trace_outf trace.h5
 EOF
 
 "$(dirname "$0")/ipole" -par ipole.par
+
+rm ipole.par
