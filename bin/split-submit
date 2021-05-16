@@ -15,22 +15,19 @@
 # implied.  See the License for the specific language governing
 # permissions and limitations under the License.
 
-d=$(basename $PWD | cut -d_ -f1)
+if [ ! -f par/BATCH.ALL ]; then
+    echo 'Generate parameter file'
+    bin/pargen > par/BATCH.ALL
+fi
 
-for f in "/public/ckc/eht/sgra/${d}/"*.h5; do
-	t=$(basename "$f" ".h5" | cut -d_ -f2)
-	s=$(expr "$t" / 1000 \* 1000)
-	grep "$s" "/public/ckc/eht/sgra/munits_${d}.txt" > "${d}-tmp.tsv"
+echo 'Split parameter file'
+split -da02 -l8192 par/BATCH.ALL par/batch.p
 
-	if [ $(cat "${d}-tmp.tsv" | wc -l) -ne 36 ]; then
-	    echo 'ERROR!!!'
-	    break
-	fi
-
-	awk '{print $2","$1","$4}' "${d}-tmp.tsv" | while read p; do
-		# input,Rhigh,inc,Munit
-		echo http://stash.osgconnect.net${f},${t},${p}
-	done
-
-	rm "${d}-tmp.tsv"
+echo 'Submit jobs'
+for f in par/batch.p??; do
+    g="par/BATCH.D${f#par/batch.p}"
+    echo -n "$f -> $g"
+    bin/submit
+    mv -f "$f" "$g"
+    echo 'DONE'
 done
