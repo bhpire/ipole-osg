@@ -20,14 +20,20 @@ if [ ! -f par/BATCH.ALL ]; then
     bin/pargen > par/BATCH.ALL
 fi
 
-echo 'Split parameter file'
-split -da02 -l8192 par/BATCH.ALL par/batch.p
+if [ ! -f par/*.?00 ]; then
+    echo 'Split parameter file'
+    split -da02 -l8192 par/BATCH.ALL par/batch.p
+fi
 
 echo 'Submit jobs'
 for f in par/batch.p??; do
     g="par/BATCH.D${f#par/batch.p}"
     echo -n "$f -> $g"
     bin/submit
+    if [ $? == 1 ]; then
+	echo STOP
+	break # submission error
+    fi
     mv -f "$f" "$g"
     echo 'DONE'
 done
