@@ -31,11 +31,11 @@ arguments  = $Fnx(input) $(Rhigh) $(inc) $(Munit)
 transfer_executable    = False
 transfer_input_files   = bin/,$(input)
 transfer_output_remaps = "\
-	image.h5=out/img_$(frame)_$(Rhigh)_$(inc).h5"
+	image.h5=out/img_f$(frame)_Rh$(Rhigh)_i$(inc).h5"
 
-output = log/img_$(frame)_$(Rhigh)_$(inc).out
-error  = log/img_$(frame)_$(Rhigh)_$(inc).err
-log    = log/img_$(frame)_$(Rhigh)_$(inc).log
+output = log/img_f$(frame)_Rh$(Rhigh)_i$(inc).out
+error  = log/img_f$(frame)_Rh$(Rhigh)_i$(inc).err
+log    = log/img_f$(frame)_Rh$(Rhigh)_i$(inc).log
 
 universe       = vanilla
 request_memory = 4 GB
