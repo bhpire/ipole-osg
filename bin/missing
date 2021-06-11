@@ -18,8 +18,8 @@
 b=${1:-0}
 
 for j in {0..9}; do
-	c=$(ls -U img_s0${b}${j}??_*.h5 2> /dev/null | wc -l)
-	echo "${j} img_s0${b}${j}"'??_*.h5'" ${c}";
+	c=$(ls -U out/img_s0${b}${j}??_*.h5 2> /dev/null | wc -l)
+	echo "${j} out/img_s0${b}${j}"'??_*.h5'" ${c}";
 
 	if [ $c -lt 3590 ]; then
 		continue
@@ -28,9 +28,10 @@ for j in {0..9}; do
 	for s in {00..99}; do
 		for Rh in 1 10 40 160; do
 			for i in {1..17..2}0; do
-				file="img_s0${b}${j}${s}_Rh${Rh}_i${i}.h5"
+				file="out/img_s0${b}${j}${s}_Rh${Rh}_i${i}.h5"
 				if [ ! -f "$file" ]; then
 					echo "  * missing $file"
+					grep -F "${b}${j}${s},${Rh},${i}" par/BATCH.ALL >> BATCH.ALL
 				fi
 			done
 		done
