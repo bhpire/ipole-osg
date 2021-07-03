@@ -39,7 +39,7 @@ theta="$4"
 rho0="$5"
 
 mymd5=$(md5sum "$input" | cut -d' ' -f1)
-if [ x"$mymd5" == x"$inmd5" ]; then
+if [ x"$mymd5" != x"$inmd5" ]; then
 	>&2 echo "md5 of transferred file ${input}, ${mymd5}, does not match with ${inmd5}"
 	exit 1
 fi
