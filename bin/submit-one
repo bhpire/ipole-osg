@@ -26,7 +26,7 @@
 # or run as a command directly `bin/submit`.
 
 executable = wrapper
-arguments  = $Fnx(input) $(Rhigh) $(inc) $(Munit)
+arguments  = $Fnx(input) $(md5) $(Rhigh) $(inc) $(rho0)
 
 transfer_executable    = False
 transfer_input_files   = bin/,$(input)
@@ -45,4 +45,4 @@ request_cpus   = 4
 on_exit_hold     = (ExitBySignal == True) || (ExitCode > 1)
 periodic_release = (NumJobStarts < 3) && ((CurrentTime - EnteredCurrentStatus) > 60)
 
-queue 1 input,snapshot,Rhigh,inc,Munit from bin/parget |
+queue 1 input,md5,snapshot,Rhigh,inc,rho0 from bin/parget |
