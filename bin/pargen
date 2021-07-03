@@ -15,22 +15,15 @@
 # implied.  See the License for the specific language governing
 # permissions and limitations under the License.
 
-d=$(basename $PWD | cut -d_ -f1)
+d=$(basename "${PWD}" | cut -d_ -f1,2)
+r=/public/ckc/eht/sgra
 
-for f in "/public/ckc/eht/sgra/${d}/"torus.out0.*.h5; do
-	t=$(basename "$f" ".h5" | cut -d. -f3)
-	s=$(expr "$t" / 1000 \* 1000)
-	grep "	$s	" "/public/ckc/eht/sgra/munits_${d}.txt" > "${d}-tmp.tsv"
+k="${d:0:-3}"
+w="${d:  -1}"
 
-	if [ $(cat "${d}-tmp.tsv" | wc -l) -ne 36 ]; then
-	    echo 'ERROR!!!'
-	    break
-	fi
-
-	awk '{print $2","$1","$4}' "${d}-tmp.tsv" | while read p; do
-		# input,Rhigh,inc,Munit
-		echo http://stash.osgconnect.net${f},${t},${p}
+awk '{if($3=='${w}') {print $1","$2","$4}}' "${r}/rho0/rho0_${k}.tsv" | while read Rh_i_rho0; do
+	for f in "${r}/${d}/"torus.out0.*.h5; do
+		md5=$(awk '{if($1=="'$(basename $f)'") {print $2}}' "${r}/md5/md5_${k}_w${w}.tsv")
+		echo https://stash.osgconnect.net${f},${md5},${Rh_i_rho0}
 	done
-
-	rm "${d}-tmp.tsv"
 done
