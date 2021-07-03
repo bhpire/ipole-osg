@@ -22,8 +22,10 @@ k="${d:0:-3}"
 w="${d:  -1}"
 
 awk '{if($3=='${w}') {print $1","$2","$4}}' "${r}/rho0/rho0_${k}.tsv" | while read Rh_i_rho0; do
-	for f in "${r}/${d}/"torus.out0.*.h5; do
-		md5=$(awk '{if($1=="'$(basename $f)'") {print $2}}' "${r}/md5/md5_${k}_w${w}.tsv")
-		echo https://stash.osgconnect.net${f},${md5},${Rh_i_rho0}
+	for p in "${r}/${d}/"torus.out0.*.h5; do
+		f=$(basename $p)
+		s=${f:11:-3}
+		md5=$(awk '{if($1=="'${f}'") {print $2}}' "${r}/md5/md5_${k}_w${w}.tsv")
+		echo https://stash.osgconnect.net${p},${md5},${s},${Rh_i_rho0}
 	done
 done
