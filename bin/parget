@@ -16,7 +16,7 @@
 # permissions and limitations under the License.
 
 if [ "x$1" == "x" ]; then
-    cat "$(ls -1 par/batch.p?? | head -n1)"
+	cat "$(ls -1 par/batch.p?? | head -n1)"
 else
-    cat "$1"
+	cat "$1"
 fi
