@@ -31,12 +31,18 @@ EOF
 fi
 
 set -e
-#ulimit -s 16384
 
 input="$1"
-Rhigh="$2"
-theta="$3"
-Munit="$4"
+inmd5="$2"
+Rhigh="$3"
+theta="$4"
+rho0="$5"
+
+mymd5=$(md5sum "$input" | cut -d' ' -f1)
+if [ x"$mymd5" == x"$inmd5" ]; then
+	>&2 echo "md5 of transferred file ${input}, ${mymd5}, does not match with ${inmd5}"
+	exit 1
+fi
 
 cat <<EOF | tee ipole.par
 # Automatically generated \`ipole\` parameter file
@@ -54,7 +60,7 @@ emission_type 4
 MBH     4.14e6
 dsource 8.127e3
 freqcgs 230.e9
-M_unit  ${Munit}
+M_unit  ${rho0}
 
 # e- Temperature, via the Rhigh model described
 trat_small 1
@@ -113,6 +119,7 @@ trace_stride 1
 trace_outf trace.h5
 EOF
 
-"$(dirname "$0")/ipole" -par ipole.par
+"$(dirname "$0")/ipole"        -par ipole.par
+"$(dirname "$0")/ipole" -check -par ipole.par
 
 rm ipole.par
