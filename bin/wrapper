@@ -57,8 +57,8 @@ ny      400
 emission_type 4
 
 # Sgr A* parameters
-MBH     4.136e6
-dsource 8.142e3
+MBH     4.14e6
+dsource 8.127e3
 freqcgs 230.e9
 M_unit  ${rho0}
 
