@@ -32,16 +32,27 @@ fi
 
 set -e
 
+ipole="$(dirname "$0")/ipole"
+ipmd5="aabc1653768947da9eff8d19311c22fb"
+
 input="$1"
 inmd5="$2"
 Rhigh="$3"
 theta="$4"
 rho0="$5"
 
-mymd5=$(md5sum "$input" | cut -d' ' -f1)
-if [ x"$mymd5" != x"$inmd5" ]; then
-	>&2 echo "md5 of transferred file ${input}, ${mymd5}, does not match with ${inmd5}"
-	exit 2
+mymd5=$(md5sum "${ipole}" | cut -d' ' -f1)
+if [ x"$mymd5" == x"$ipmd5" ]; then
+	>&2 echo "md5("${ipole}") == ${mymd5} == ${ipmd5}"
+else
+	>&2 echo "WARNING: md5("${ipole}") == ${mymd5} != ${ipmd5}"
+fi
+
+mymd5=$(md5sum "${input}" | cut -d' ' -f1)
+if [ x"$mymd5" == x"$inmd5" ]; then
+	>&2 echo "md5(${input}) == ${mymd5} == ${inmd5}"
+else
+	>&2 echo "WARNING: md5(${input}) == ${mymd5} != ${inmd5}"
 fi
 
 cat <<EOF | tee ipole.par
@@ -119,7 +130,13 @@ trace_stride 1
 trace_outf trace.h5
 EOF
 
-"$(dirname "$0")/ipole"        -par ipole.par
-"$(dirname "$0")/ipole" -check -par ipole.par
+mymd5=$(md5sum "ipole.par" | cut -d' ' -f1)
+>&2 echo "md5(ipole.par) == ${mymd5}"
+
+"${ipole}"        -par ipole.par
+"${ipole}" -check -par ipole.par
+
+mymd5=$(md5sum "image.h5" | cut -d' ' -f1)
+>&2 echo "md5(image.h5) == ${mymd5}"
 
 rm ipole.par
