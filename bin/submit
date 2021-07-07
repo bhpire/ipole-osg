@@ -43,6 +43,7 @@ request_disk   = 1 GB
 request_cpus   = 1
 
 on_exit_hold     = (ExitBySignal == True) || (ExitCode > 1)
-periodic_release = (NumJobStarts < 3) && ((CurrentTime - EnteredCurrentStatus) > 60)
+periodic_hold    = ((CurrentTime - EnteredCurrentStatus) > 28800)
+periodic_release = ((CurrentTime - EnteredCurrentStatus) > 60) && (NumJobStarts < 5)
 
 queue 1 input,md5,snapshot,Rhigh,inc,rho0 from bin/parget |
