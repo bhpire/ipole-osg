@@ -15,8 +15,4 @@
 # implied.  See the License for the specific language governing
 # permissions and limitations under the License.
 
-pushd out > /dev/null
-
-md5sum $(ls -v img*.h5) > md5
-
-popd > /dev/null
+grep -F 'md5(image.h5)' log/*err | sort -V | sed 's|log/\(.*\).err:md5(image.h5) == \(.*\)|\1.h5\t\2|g' > out/worker-md5.tsv
