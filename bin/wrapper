@@ -24,7 +24,7 @@
 
 if test $# -lt 2; then
 	cat <<EOF
-usage: $0 <input> <Tp/Te> <inclination> <M_unit>
+usage: $0 <input> <input_md5> <Tp/Te> <inclination> <M_unit>
 a wrapper to run \`ipole\` on the Open Science Grid with HTCondor
 EOF
 	exit 1
