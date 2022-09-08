@@ -11,9 +11,9 @@ output.
 To start,
 
     ssh osg
-	cd /public/<user>/
-    git clone git@github.com:bhpire/ipole-osg.git run-01
-	cd run-01
+    cd /public/<user>/
+    git clone git@github.com:bhpire/ipole-osg.git Ma+0.94_w5_230GHz
+    cd Ma+0.94_w5_230GHz
 
 All the scripts are placed inside `bin/`.
 The empty directories `dat/`, `log/`, and `out/` will be used to stage
@@ -23,19 +23,22 @@ Before submitting a job, one needs to copy a static linked `ipole`
 binary to `bin/` and populate `dat/` with GRMHD data.
 
     cp ~/src/ipole/ipole bin
+    md5sum bin/ipole
+    vi bin/wrapper # update $ipmd5 with the new md5
     scp bh:sim-lib/sample/dump_*.h5 dat
 
 Edit to `bin/pargen` may be made to generate the necessary parameter
 sets.
 Then, simply submit an OSG job by
 
-    bin/submit
+    bin/batch
 
-`bin/submit` is a standard Condor submission script starts with a
-hashbang directive to use the system `condor_submit`.
-It uses `bin/pargen` to generate a list of parameter sets based on all
-the GRMHD input data in `dat/` and the parameter listed inside
+`bin/batch` uses `bin/pargen` to generate a list of parameter sets
+based on all the GRMHD input data and the parameter listed inside
 `bin/pargen`.
+The actual job submission is done by `bin/submit`, whic is a standard
+Condor submission script starts with a hashbang directive to use the
+system `condor_submit`.
 These parameter sets are then passed to `bin/wrapper` on the worker
 machines as command line arguments.
 `bin/wrapper` will automatically generate a `ipole` parameter file
