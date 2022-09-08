@@ -48,3 +48,31 @@ All Condor logs, `stdout`, and `stderr` will be sent to `log/`.
 The parameter files and spectrum output will be saved to `out/`.
 Their file names are transform according to the rules described in
 `bin/submit`.
+
+# Demo
+
+Useful commands during demo:
+
+    # Compile ipole
+    ssh osg
+    cd /home/ckc/src/ipole
+    git diff
+    cd ~/src
+    git clone https://github.com/AFD-Illinois/ipole.git ipole-demo
+    cp ~/src/ipole-demo
+    cp /home/ckc/src/ipole/makefile .
+    module load gsl hdf5
+    make
+    nm ipole | grep ' U '
+
+    # Clone the ipole-osg tools and use it
+    cd ~/run
+    git clone git@github.com:bhpire/ipole-osg.git Ma+0.94_w5_230GHz
+    cd Ma+0.94_w5_230GHz
+    cp ~/src/ipole-demo/ipole bin/
+    md5sum bin/ipole
+    vi bin/wrapper # update $ipmd5 with the new md5
+    bin/batch # ctrl-C to submit part of the jobs
+    condor_q
+    condor_q -run
+    condor_q -long JOB_ID
