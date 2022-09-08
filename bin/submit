@@ -38,9 +38,12 @@ error  = log/img_s$(snapshot)_Rh$(Rhigh)_i$(inc).err
 log    = log/img_s$(snapshot)_Rh$(Rhigh)_i$(inc).log
 
 universe       = vanilla
-request_memory = 2 GB
+request_memory = 4 GB
 request_disk   = 1 GB
-request_cpus   = 1
+request_cpus   = 4
+
+Requirements = HAS_SINGULARITY
++SingularityImage = "/cvmfs/singularity.opensciencegrid.org/opensciencegrid/osgvo-el7:latest"
 
 on_exit_hold     = (ExitBySignal == True) || (ExitCode > 1)
 periodic_hold    = ((CurrentTime - EnteredCurrentStatus) > 28800) && (JobStatus == 2)
