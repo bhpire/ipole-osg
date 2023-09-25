@@ -25,7 +25,6 @@ binary to `bin/` and populate `dat/` with GRMHD data.
     cp ~/src/ipole/ipole bin
     md5sum bin/ipole
     vi bin/wrapper # update $ipmd5 with the new md5
-    scp bh:sim-lib/sample/dump_*.h5 dat
 
 Edit to `bin/pargen` may be made to generate the necessary parameter
 sets.
