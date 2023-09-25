@@ -10,23 +10,23 @@ directory for both submitting a large OSG job and gathering the
 output.
 To start,
 
-    ssh osg
-    cd /public/<user>/
+    ssh osg # OSG now requires two-factor authentication
+    cd ~/runs
     git clone git@github.com:bhpire/ipole-osg.git Ma+0.94_w5_230GHz
     cd Ma+0.94_w5_230GHz
 
 All the scripts are placed inside `bin/`.
-The empty directories `dat/`, `log/`, and `out/` will be used to stage
-GRMHD data (as input to `ipole`), OSG run logs, and `ipole` output.
+The empty directories `log/`, `out/`, and `par/` will be used to stage
+OSG run logs, `ipole` output, and parameter files.
 
 Before submitting a job, one needs to copy a static linked `ipole`
-binary to `bin/` and populate `dat/` with GRMHD data.
+binary to `bin/`.
 
     cp ~/src/ipole/ipole bin
     md5sum bin/ipole
     vi bin/wrapper # update $ipmd5 with the new md5
 
-Edit to `bin/pargen` may be made to generate the necessary parameter
+Edits may be made to `bin/pargen` to generate the necessary parameter
 sets.
 Then, simply submit an OSG job by
 
@@ -53,19 +53,17 @@ Their file names are transform according to the rules described in
 Useful commands during demo:
 
     # Compile ipole
-    ssh osg
-    cd /home/ckc/src/ipole
-    git diff
+    ssh osg # OSG now requires two-factor authentication
     cd ~/src
     git clone https://github.com/AFD-Illinois/ipole.git ipole-demo
-    cp ~/src/ipole-demo
-    cp /home/ckc/src/ipole/makefile .
+    cp /ipole-demo
+    vi makefile # enable static linkage
     module load gsl hdf5
     make
-    nm ipole | grep ' U '
+    nm ipole | grep ' U ' # there should not be any undefined symbols
 
     # Clone the ipole-osg tools and use it
-    cd ~/run
+    cd ~/runs
     git clone git@github.com:bhpire/ipole-osg.git Ma+0.94_w5_230GHz
     cd Ma+0.94_w5_230GHz
     cp ~/src/ipole-demo/ipole bin/
