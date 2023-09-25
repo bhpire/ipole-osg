@@ -28,7 +28,7 @@ fi
 echo 'Submit jobs'
 for f in par/batch.p??; do
 	g="par/BATCH.D${f#par/batch.p}"
-	echo -n "$f -> $g"
+	echo "$f -> $g"
 	bin/submit
 	if [ $? == 1 ]; then
 		echo STOP

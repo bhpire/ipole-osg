@@ -16,7 +16,7 @@
 # permissions and limitations under the License.
 
 d=$(basename "${PWD}" | cut -d_ -f1,2)
-r=/public/ckc/eht/sgra
+r=/ospool/ap21/data/ckc/eht/GRMHD_kharma-v3
 
 k="${d:0:-3}"
 w="${d:  -1}"
@@ -26,6 +26,6 @@ awk '{if($3=='${w}') {print $1","$2","$4}}' "${r}/rho0/rho0_${k}.tsv" | while re
 		f=$(basename $p)
 		s=${f:11:-3}
 		md5=$(awk '{if($1=="'${f}'") {print $2}}' "${r}/md5/md5_${k}_w${w}.tsv")
-		echo stash:///osgconnect${p},${md5},${s},${Rh_i_rho0}
+		echo osdf://${p},${md5},${s},${Rh_i_rho0}
 	done
 done
