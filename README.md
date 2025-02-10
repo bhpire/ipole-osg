@@ -56,7 +56,7 @@ Useful commands during demo:
     ssh osg # OSG now requires two-factor authentication
     cd ~/src
     git clone https://github.com/AFD-Illinois/ipole.git ipole-demo
-    cp /ipole-demo
+    cd ipole-demo
     vi makefile # enable static linkage
     module load gsl hdf5
     make
